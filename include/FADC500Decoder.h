@@ -82,12 +82,12 @@ class FADC500Decoder {
 		Int_t			flag = 1;
 		Int_t			on_flag = 1;
 		Int_t			monitorflag = 1;
-		TH1D			*fadc = 0;
-		TH1D			*adc = 0;
-		TH1D			*tdc = 0;
-		TCanvas			*c1;
-		TCanvas			*c2;
-		TCanvas			*c3;
+		TH1D			*fadc[6][4];
+		TH1D			*adc[6][4];
+		TH1D			*tdc[6][4];
+		TCanvas			*c1[6][4];
+		TCanvas			*c2[6][4];
+		TCanvas			*c3[6][4];
 
 		void     		GetTree(char* filename, TTree *tree=0);
 		Int_t    		GetEntry(Long64_t entry);

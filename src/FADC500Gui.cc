@@ -206,30 +206,64 @@ FADC500Gui::FADC500Gui()
 	fCompositeFrame2 -> SetLayoutManager(new TGVerticalLayout(fCompositeFrame2));
 	fCompositeFrame2 ->SetLayoutBroken(kTRUE);
 
-	TRootEmbeddedCanvas *monitorFADC = new TRootEmbeddedCanvas(0,fCompositeFrame2,500,230,kSunkenFrame);
-	monitorFADC->SetName("monitorFADC");
-	Int_t wmonitorFADC = monitorFADC->GetCanvasWindowId();
-	decoder.c1 = new TCanvas("cvs1", 10, 10, wmonitorFADC);
-	monitorFADC->AdoptCanvas(decoder.c1);
-	fCompositeFrame2->AddFrame(monitorFADC, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-	monitorFADC->MoveResize(10,10,500,230);
+	TGTab *fSubTab = new TGTab(fCompositeFrame2, 1050, 530);
+	TGTab *fSSubTab[6];
 
-	TRootEmbeddedCanvas *monitorADC = new TRootEmbeddedCanvas(0,fCompositeFrame2,500,230,kSunkenFrame);
-	monitorADC->SetName("monitorADC");
-	Int_t wmonitorADC = monitorADC->GetCanvasWindowId();
-	decoder.c2 = new TCanvas("cvs2", 10, 10, wmonitorADC);
-	monitorADC->AdoptCanvas(decoder.c2);
-	fCompositeFrame2->AddFrame(monitorADC, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-	monitorADC->MoveResize(520,10,500,230);
+	// container of "SubTab"
+	TGCompositeFrame *fModuleFrame[6];
+	TGCompositeFrame *fChannelFrame[6][4];
 
-	TRootEmbeddedCanvas *monitorTDC = new TRootEmbeddedCanvas(0,fCompositeFrame2,500,230,kSunkenFrame);
-	monitorTDC->SetName("monitorTDC");
-	Int_t wmonitorTDC = monitorTDC->GetCanvasWindowId();
-	decoder.c3 = new TCanvas("cvs3", 10, 10, wmonitorTDC);
-	monitorTDC->AdoptCanvas(decoder.c3);
-	fCompositeFrame2->AddFrame(monitorTDC, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-	monitorTDC->MoveResize(10,270,500,230);
+	TRootEmbeddedCanvas *monitorFADC[6][4];
+	TRootEmbeddedCanvas *monitorADC[6][4];
+	TRootEmbeddedCanvas *monitorTDC[6][4];
 
+	Int_t wmonitorFADC[6][4];
+	Int_t wmonitorADC[6][4];
+	Int_t wmonitorTDC[6][4];
+
+	for (int i = 0; i < 6; i++)
+	{
+		fModuleFrame[i] = fSubTab -> AddTab(Form("Module#%d",i+1));
+		fModuleFrame[i] -> SetLayoutManager(new TGVerticalLayout(fModuleFrame[i]));
+		fModuleFrame[i] ->SetLayoutBroken(kTRUE);
+
+		fSSubTab[i] = new TGTab(fModuleFrame[i], 1040, 490);
+
+
+		// local parameters : channels
+		for (int j = 0; j < 4; j++)
+		{
+//          int widgetID = i*100 + j*10;
+			fChannelFrame[i][j] = fSSubTab[i] -> AddTab(Form("Channel#%d",j+1));
+			fChannelFrame[i][j] -> SetLayoutManager(new TGVerticalLayout(fChannelFrame[i][j]));
+			fChannelFrame[i][j] ->SetLayoutBroken(kTRUE);
+
+			monitorFADC[i][j] = new TRootEmbeddedCanvas(0,fChannelFrame[i][j],500,230,kSunkenFrame);
+			monitorFADC[i][j]->SetName(Form("monitorFADC_%d_%d", i, j));
+			wmonitorFADC[i][j] = monitorFADC[i][j]->GetCanvasWindowId();
+			decoder.c1[i][j] = new TCanvas(Form("cvs1_%d_%d", i, j), 10, 10, wmonitorFADC[i][j]);
+			monitorFADC[i][j]->AdoptCanvas(decoder.c1[i][j]);
+			fChannelFrame[i][j]->AddFrame(monitorFADC[i][j], new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+			monitorFADC[i][j]->MoveResize(10,10,500,220);
+
+			monitorADC[i][j] = new TRootEmbeddedCanvas(0,fChannelFrame[i][j],500,230,kSunkenFrame);
+			monitorADC[i][j]->SetName(Form("monitorADC_%d_%d", i, j));
+			wmonitorADC[i][j] = monitorADC[i][j]->GetCanvasWindowId();
+			decoder.c2[i][j] = new TCanvas(Form("cvs2_%d_%d", i, j), 10, 10, wmonitorADC[i][j]);
+			monitorADC[i][j]->AdoptCanvas(decoder.c2[i][j]);
+			fChannelFrame[i][j]->AddFrame(monitorADC[i][j], new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+			monitorADC[i][j]->MoveResize(520,10,500,220);
+
+			monitorTDC[i][j] = new TRootEmbeddedCanvas(0,fChannelFrame[i][j],500,230,kSunkenFrame);
+			monitorTDC[i][j]->SetName(Form("monitorTDC_%d_%d", i, j));
+			wmonitorTDC[i][j] = monitorTDC[i][j]->GetCanvasWindowId();
+			decoder.c3[i][j] = new TCanvas(Form("cvs3_%d_%d", i, j), 10, 10, wmonitorTDC[i][j]);
+			monitorTDC[i][j]->AdoptCanvas(decoder.c3[i][j]);
+			fChannelFrame[i][j]->AddFrame(monitorTDC[i][j], new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+			monitorTDC[i][j]->MoveResize(10,240,500,220);
+		}
+
+	}
 
 	TGTextButton *MONITORON = new TGTextButton(fCompositeFrame2,"MONITOR ON",-1,TGTextButton::GetDefaultGC()(),TGTextButton::GetDefaultFontStruct(),kRaisedFrame);
     MONITORON -> Connect("Clicked()", "FADC500Gui", this, "MonitorOn()");
@@ -238,7 +272,7 @@ FADC500Gui::FADC500Gui()
     MONITORON->SetWrapLength(-1);
     MONITORON->Resize(100,35);
     fCompositeFrame2->AddFrame(MONITORON, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-    MONITORON->MoveResize(1050,100,100,35);
+    MONITORON->MoveResize(1070,100,100,35);
 
 	TGTextButton *MONITOROFF = new TGTextButton(fCompositeFrame2,"MONITOR OFF",-1,TGTextButton::GetDefaultGC()(),TGTextButton::GetDefaultFontStruct(),kRaisedFrame);
     MONITOROFF -> Connect("Clicked()", "FADC500Gui", this, "MonitorOff()");
@@ -247,7 +281,7 @@ FADC500Gui::FADC500Gui()
     MONITOROFF->SetWrapLength(-1);
     MONITOROFF->Resize(100,35);
     fCompositeFrame2->AddFrame(MONITOROFF, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-    MONITOROFF->MoveResize(1050,150,100,35);
+    MONITOROFF->MoveResize(1070,150,100,35);
 
 
 	TGLabel *lCOPYRIGHT = new TGLabel(fMainFrame1073, "Copyright 2017. B. Moon");
@@ -264,6 +298,19 @@ FADC500Gui::FADC500Gui()
 	fTab1->Resize(fTab1->GetDefaultSize());
 	fMainFrame1073->AddFrame(fTab1, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
 	fTab1->MoveResize(10,25,1180,560);
+
+	fSubTab -> SetTab(0);
+	fSubTab->Resize(fSubTab->GetDefaultSize());
+	fCompositeFrame2->AddFrame(fSubTab, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+	fSubTab->MoveResize(10,10,1050,530);
+
+	for (int i = 0; i < 6; i++)
+	{
+		fSSubTab[i] -> SetTab(0);
+		fSSubTab[i]->Resize(fSSubTab[i]->GetDefaultSize());
+		fModuleFrame[i]->AddFrame(fSSubTab[i], new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+		fSSubTab[i]->MoveResize(10,10,1040,490);
+	}
 
 	fMainFrame1073->SetMWMHints(kMWMDecorAll, kMWMFuncAll, kMWMInputModeless);
 	fMainFrame1073->MapSubwindows();

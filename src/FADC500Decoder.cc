@@ -510,9 +510,15 @@ void FADC500Decoder::Monitor(Int_t &monitorflag)
 	gSystem -> ProcessEvents();
 	if (event_number == 0)
 	{
-		fadc = new TH1D("Flash_ADC", "FADC; Time (ns); ADC;", waveform_length, 0, 2*waveform_length);
-		adc = new TH1D("ADC", "ADC; ADC; Counts;", 4096, 0, 4096);
-		tdc = new TH1D("TDC", "TDC; Time (ps); Counts;", 1000, 0, 1000E3); 
+		for (int i = 0; i < 6; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				fadc[i][j] = new TH1D("Flash_ADC", "FADC; Time (ns); ADC;", waveform_length, 0, 2*waveform_length);
+				adc[i][j] = new TH1D("ADC", "ADC; ADC; Counts;", 4096, 0, 4096);
+				tdc[i][j] = new TH1D("TDC", "TDC; Time (ps); Counts;", 1000, 0, 10000E3); 
+			}
+		}
 	}
 	gSystem -> ProcessEvents();
 	if (monitorflag == 1)
@@ -520,7 +526,13 @@ void FADC500Decoder::Monitor(Int_t &monitorflag)
 
 		if (event_number > 0)
 		{
-			fadc -> Reset();
+			for (int i = 0; i < 6; i++)
+			{
+				for (int j = 0; j < 4; j++)
+				{
+					fadc[i][j] -> Reset();
+				}
+			}
 		}
 		gSystem -> ProcessEvents();
 
@@ -536,38 +548,38 @@ void FADC500Decoder::Monitor(Int_t &monitorflag)
 
 		for (int i = 0; i < waveform_length; i++)
 		{
-			fadc -> Fill(waveformtime[i], waveform[i]);
+			fadc[mid-1][cid-1] -> Fill(waveformtime[i], waveform[i]);
 		}	
-		fadc -> Sumw2(kFALSE);
+		fadc[mid-1][cid-1] -> Sumw2(kFALSE);
 		gSystem -> ProcessEvents();
 
 		Int_t tempadc = 0;
 
-		tempadc = fadc -> GetMaximum();
+		tempadc = fadc[mid-1][cid-1] -> GetMaximum();
 		if (tempadc > ped+100)	adcvalue = tempadc - ped;
-		else	adcvalue = ped - fadc -> GetMinimum();
+		else	adcvalue = ped - fadc[mid-1][cid-1] -> GetMinimum();
 		gSystem -> ProcessEvents();
 
-		adc -> Fill(adcvalue);
-		tdc -> Fill(waveform_ftime);
+		adc[mid-1][cid-1] -> Fill(adcvalue);
+		tdc[mid-1][cid-1] -> Fill(waveform_ftime);
 		gSystem -> ProcessEvents();
 
-		c1 -> cd();
-		c1 -> Modified();
-		c1 -> Update();
-		fadc -> Draw();
+		c1[mid-1][cid-1] -> cd();
+		c1[mid-1][cid-1] -> Modified();
+		c1[mid-1][cid-1] -> Update();
+		fadc[mid-1][cid-1] -> Draw();
 		gSystem -> ProcessEvents();
 
-		c2 -> cd();
-		c2 -> Modified();
-		c2 -> Update();
-		adc -> Draw();
+		c2[mid-1][cid-1] -> cd();
+		c2[mid-1][cid-1] -> Modified();
+		c2[mid-1][cid-1] -> Update();
+		adc[mid-1][cid-1] -> Draw();
 		gSystem -> ProcessEvents();
 
-		c3 -> cd();
-		c3 -> Modified();
-		c3 -> Update();
-		tdc -> Draw();
+		c3[mid-1][cid-1] -> cd();
+		c3[mid-1][cid-1] -> Modified();
+		c3[mid-1][cid-1] -> Update();
+		tdc[mid-1][cid-1] -> Draw();
 		gSystem -> ProcessEvents();
 	}
 	
