@@ -149,10 +149,10 @@ void FADC500Decoder::Build(TTree *tree)
 	fChain->Branch("local_trig_ftime", &local_trig_ftime, "local_trig_ftime/l");
 	fChain->Branch("local_trig_ctime", &local_trig_ctime, "local_trig_ctime/l");
 	fChain->Branch("waveform_length", &waveform_length, "waveform_length/I");
-	fChain->Branch("waveform", waveform, "waveform[16368]/I");
-	fChain->Branch("waveformtime", waveformtime, "waveformtime[16368]/I");
+	fChain->Branch("waveform", waveform, "waveform[waveform_length]/I");
+	fChain->Branch("waveformtime", waveformtime, "waveformtime[waveform_length]/I");
 	fChain->Branch("twaveform_length", &twaveform_length, "twaveform_length/I");
-	fChain->Branch("twaveform", twaveform, "twaveform[4092]/I");
+	fChain->Branch("twaveform", twaveform, "twaveform[twaveform_length]/I");
 	fChain->Branch("waveform_ftime", &waveform_ftime, "waveform_ftime/D");
 	Notify();
 }
