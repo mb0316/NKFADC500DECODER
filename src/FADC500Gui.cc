@@ -73,11 +73,11 @@ GUI DECODER Program is built by Byul Moon from Korea Univerity.\n\
 ";
 
 const char gMANUAL[] ="\
-				NKFADC500 GUI DAQ Program MANUAL\n\
+				NKFADC500 GUI DECODER Program MANUAL\n\
 ";
 
 const char gCONTACT[] ="\
-				NKFADC500 GUI DAQ Program CONTACT INFORMATION\n\
+				NKFADC500 GUI DECODER Program CONTACT INFORMATION\n\
 Please contact via the following e-mail address.\n\
 mb0316@nuclear.korea.ac.kr\n\
 ";
@@ -108,9 +108,9 @@ FADC500Gui::FADC500Gui()
 	fMenuBar->AddPopup("&File", fMenuFile, new TGLayoutHints(kLHintsTop|kLHintsLeft, 0, 4, 0, 0));
 
 	TGPopupMenu* fMenuHelp = new TGPopupMenu(gClient->GetRoot());
-	fMenuHelp->AddEntry(" &About NKFADC500", M_HELP_ABOUT, 0, gClient->GetPicture("about.xpm"));
-	fMenuHelp->AddEntry(" NKFADC500 &Manual", M_HELP_MANUAL);
-	fMenuHelp->AddEntry(" NKFADC500 &Contact Info.", M_HELP_CONTACT);
+	fMenuHelp->AddEntry(" &About NKFADC500 DECODER", M_HELP_ABOUT, 0, gClient->GetPicture("about.xpm"));
+	fMenuHelp->AddEntry(" NKFADC500 DECODER &Manual", M_HELP_MANUAL);
+	fMenuHelp->AddEntry(" NKFADC500 DECODER &Contact Info.", M_HELP_CONTACT);
 	fMenuHelp->Connect("Activated(Int_t)", "FADC500Gui", this, "HandleMenu(Int_t)");
 	fMenuBar->AddPopup("&Help", fMenuHelp, new TGLayoutHints(kLHintsTop|kLHintsLeft));
 

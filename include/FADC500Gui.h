@@ -63,6 +63,7 @@ class FADC500Gui
 {
 	private :
 		FADC500Decoder decoder;
+//		FADC500Analysis ana;
 
 		TString openFile;
 		TString directory;

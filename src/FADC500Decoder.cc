@@ -229,6 +229,7 @@ void FADC500Decoder::Decoder(TString datafile)
 				std::cout<< "End the data readout." << std::endl;
 				break;
 			}
+			if (event_number % 100 == 0)	std::cout << "Event number : " << event_number << std::endl;
 			gSystem -> ProcessEvents();
 
 			total_data_size += read_size;
@@ -553,11 +554,13 @@ void FADC500Decoder::Monitor(Int_t &monitorflag)
 		fadc[mid-1][cid-1] -> Sumw2(kFALSE);
 		gSystem -> ProcessEvents();
 
-		Int_t tempadc = 0;
+		Int_t tempadc1 = 0;
+		Int_t tempadc2 = 0;
 
-		tempadc = fadc[mid-1][cid-1] -> GetMaximum();
-		if (tempadc > ped+100)	adcvalue = tempadc - ped;
-		else	adcvalue = ped - fadc[mid-1][cid-1] -> GetMinimum();
+		tempadc1 = fadc[mid-1][cid-1] -> GetMaximum();
+		tempadc2 = fadc[mid-1][cid-1] -> GetMinimum();
+		if (abs(tempadc1) > abs(tempadc2))	adcvalue = tempadc1 - ped;
+		if (abs(tempadc1) < abs(tempadc2))	adcvalue = ped - tempadc2;
 		gSystem -> ProcessEvents();
 
 		adc[mid-1][cid-1] -> Fill(adcvalue);
