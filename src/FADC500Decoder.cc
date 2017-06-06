@@ -46,7 +46,7 @@
 #include <fstream>
 
 
-void FADC500Decoder::GetTree(char* filename, TTree *tree)
+void FADC500Decoder::GetTree(const char* filename, TTree *tree)
 {
 	if (tree == 0) {
 		TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(filename);
@@ -540,12 +540,12 @@ void FADC500Decoder::Monitor(Int_t &monitorflag)
 
 		Int_t ped = 0;
 
-		for (int i = 0; i < 20; i++)
+		for (int i = 0; i < 10; i++)
 		{
 			ped += waveform[i];
 		}
 		gSystem -> ProcessEvents();
-		ped = int(ped/20);
+		ped = int(ped/10);
 
 		for (int i = 0; i < waveform_length; i++)
 		{

@@ -53,6 +53,7 @@ May. 1. 2017.
 
 #include "Riostream.h"
 #include "FADC500Decoder.h"
+#include "FADC500Analysis.h"
 #include <stdio.h>
 #include "TStyle.h"
 #include "TCanvas.h"
@@ -63,15 +64,27 @@ class FADC500Gui
 {
 	private :
 		FADC500Decoder decoder;
-//		FADC500Analysis ana;
+		FADC500Analysis ana;
 
 		TString openFile;
 		TString directory;
 
+		TGComboBox *fDFMODE[6][4];
+		TGComboBox *fADCMODE[6][4];
+		TGComboBox *fTDCMODE[6][4];
+		TGNumberEntryField *fPRETHR[6][4];
+		TGNumberEntryField *fDFTHR[6][4];
+		TGNumberEntryField *fDELAY[6][4];
+		TGNumberEntryField *fRATIO[6][4];
+		TGNumberEntryField *fLENGTH[6][4];
+		TGNumberEntryField *fGAP[6][4];
+		TGNumberEntryField *fFLENGTH[6][4];
+
 
 	public :
 		FADC500Gui();
-		void OpenFile();
+		void OpenDatFile();
+		void OpenROOTFile();
 		void HandleMenu(Int_t menu_id);
 		void TerminatePro();
 		void StartDecoder();
@@ -82,7 +95,21 @@ class FADC500Gui
 		void StopOnline();
 		void MonitorOn();
 		void MonitorOff();
-
+		void SetADCMode(int value);
+		void SetDFMode(int value);
+		void SetTDCMode(int value);
+		void SetDelay(char *value);
+		void SetRatio(char *value);
+		void SetLength(char *value);
+		void SetfLength(char *value);
+		void SetGap(char *value);
+		void SetDFTHR(char *value);
+		void SetPRETHR(char *value);
+		void SetSame();
+		void StartAnalyzer();
+		void StopAnalyzer();
+		void FilterOn();
+		void FilterOff();
 };
 #endif
 
