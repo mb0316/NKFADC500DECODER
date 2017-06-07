@@ -259,7 +259,7 @@ void FADC500Analysis::DigitalFilter()
 			for (Int_t j = 0; j < length[mid-1][cid-1]; j++)
 			{
 				data_L += data.waveform[ipoint+j];
-				data_G += data.waveform[length[mid-1][cid-1]+ipoint+j];
+				data_G += data.waveform[length[mid-1][cid-1]+gap[mid-1][cid-1]+ipoint+j];
 			}
 		}
 		gSystem -> ProcessEvents();
@@ -396,9 +396,10 @@ Double_t FADC500Analysis::AnaTDC_CFD()
 	}
 	gSystem -> ProcessEvents();
 
-	for (Int_t i = tflag; i < tflag+(delay[mid-1][cid-1]+2*flength[mid-1][cid-1])/2; i++)
+//	for (Int_t i = tflag; i < tflag+(delay[mid-1][cid-1]+2*flength[mid-1][cid-1])/2; i++)
+	for (Int_t i = tflag; i < data.waveform_length; i++)
 	{
-		if (cfd[i] > 0)
+		if ((cfd[tflag] > 0 && cfd[i] < 0) || (cfd[tflag] < 0 && cfd[i] > 0))
 		{
 			slope = (cfd[i]-cfd[i-1])/2;
 			yax = cfd[i] - (cfd[i]-cfd[i-1])*data.waveformtime[i]/2;

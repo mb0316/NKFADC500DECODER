@@ -210,7 +210,6 @@ void FADC500Decoder::Decoder(TString datafile)
 
 	UInt_t  itmp;
 	ULong_t ltmp;
-	int total_data_size = 0;
 	int read_size = 0;
 	event_number = 0;
 	int firsttdc = 0;
@@ -232,7 +231,6 @@ void FADC500Decoder::Decoder(TString datafile)
 			if (event_number % 100 == 0)	std::cout << "Event number : " << event_number << std::endl;
 			gSystem -> ProcessEvents();
 
-			total_data_size += read_size;
 
 			data_length
 				= (data[0] & 0xFF)
@@ -368,7 +366,6 @@ void FADC500Decoder::Online(TString datafile)
 
 	UInt_t  itmp;
 	ULong_t ltmp;
-	int total_data_size = 0;
 	int read_size = 0;
 	event_number = 0;
 	int firsttdc = 0;
@@ -390,7 +387,6 @@ void FADC500Decoder::Online(TString datafile)
 			}
 			gSystem -> ProcessEvents();
 
-			total_data_size += read_size;
 
 			data_length
 				= (data[0] & 0xFF)
