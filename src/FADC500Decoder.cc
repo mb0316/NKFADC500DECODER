@@ -555,8 +555,8 @@ void FADC500Decoder::Monitor(Int_t &monitorflag)
 
 		tempadc1 = fadc[mid-1][cid-1] -> GetMaximum();
 		tempadc2 = fadc[mid-1][cid-1] -> GetMinimum();
-		if (abs(tempadc1) > abs(tempadc2))	adcvalue = tempadc1 - ped;
-		if (abs(tempadc1) < abs(tempadc2))	adcvalue = ped - tempadc2;
+		if (abs(tempadc1-ped) > abs(tempadc2-ped))	adcvalue = tempadc1 - ped;
+		if (abs(tempadc1-ped) < abs(tempadc2-ped))	adcvalue = ped - tempadc2;
 		gSystem -> ProcessEvents();
 
 		adc[mid-1][cid-1] -> Fill(adcvalue);
