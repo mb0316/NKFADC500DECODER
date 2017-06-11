@@ -567,7 +567,7 @@ void FADC500Decoder::Monitor(Int_t &monitorflag)
 		gSystem -> ProcessEvents();
 
 		if (local_trig_num == 0)	tdiff[mid-1][cid-1] = 0;
-		if (local_trig_num != 0)	tdiff[mid-1][cid-1] = local_trig_num - tdiff[mid-1][cid-1];
+		if (local_trig_num != 0)	tdiff[mid-1][cid-1] = local_trig_ctime - tdiff[mid-1][cid-1];
 		rate[mid-1][cid-1] -> SetPoint(local_trig_num, local_trig_num, tdiff[mid-1][cid-1]);
 		if (local_trig_num > 500)   rate[mid-1][cid-1] -> GetXaxis() -> SetLimits(local_trig_num-500, local_trig_num+100);
 
@@ -597,7 +597,7 @@ void FADC500Decoder::Monitor(Int_t &monitorflag)
 
 
 		
-		tdiff[mid-1][cid-1] = local_trig_num;
+		tdiff[mid-1][cid-1] = local_trig_ctime;
 	}
 	
 }
