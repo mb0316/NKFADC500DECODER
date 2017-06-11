@@ -423,10 +423,12 @@ FADC500Gui::FADC500Gui()
 	TRootEmbeddedCanvas *monitorFADC[6][4];
 	TRootEmbeddedCanvas *monitorADC[6][4];
 	TRootEmbeddedCanvas *monitorTDC[6][4];
+	TRootEmbeddedCanvas *monitorRATE[6][4];
 
 	Int_t wmonitorFADC[6][4];
 	Int_t wmonitorADC[6][4];
 	Int_t wmonitorTDC[6][4];
+	Int_t wmonitorRATE[6][4];
 
 	for (int i = 0; i < 6; i++)
 	{
@@ -468,6 +470,16 @@ FADC500Gui::FADC500Gui()
 			monitorTDC[i][j]->AdoptCanvas(decoder.c3[i][j]);
 			fChannelFrame[i][j]->AddFrame(monitorTDC[i][j], new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
 			monitorTDC[i][j]->MoveResize(10,240,500,220);
+
+			monitorRATE[i][j] = new TRootEmbeddedCanvas(0,fChannelFrame[i][j],500,230,kSunkenFrame);
+			monitorRATE[i][j]->SetName(Form("monitorRATE_%d_%d", i, j));
+			wmonitorRATE[i][j] = monitorRATE[i][j]->GetCanvasWindowId();
+			decoder.c4[i][j] = new TCanvas(Form("cvs4_%d_%d", i, j), 10, 10, wmonitorRATE[i][j]);
+			monitorRATE[i][j]->AdoptCanvas(decoder.c4[i][j]);
+			fChannelFrame[i][j]->AddFrame(monitorRATE[i][j], new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+			monitorRATE[i][j]->MoveResize(520,240,500,220);
+
+
 		}
 
 	}

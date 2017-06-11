@@ -41,6 +41,8 @@
 #include "TObjArray.h"
 #include "TObjString.h"
 #include "TCanvas.h"
+#include "TGraph.h"
+#include "TAxis.h"
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
@@ -511,9 +513,10 @@ void FADC500Decoder::Monitor(Int_t &monitorflag)
 		{
 			for (int j = 0; j < 4; j++)
 			{
-				fadc[i][j] = new TH1D("Flash_ADC", "FADC; Time (ns); ADC;", waveform_length, 0, 2*waveform_length);
-				adc[i][j] = new TH1D("ADC", "ADC; ADC; Counts;", 4096, 0, 4096);
-				tdc[i][j] = new TH1D("TDC", "TDC; Time (ps); Counts;", 1000, 0, 10000E3); 
+				fadc[i][j] = new TH1D(Form("Flash_ADC%d%d", i, j), "FADC; Time (ns); ADC;", waveform_length, 0, 2*waveform_length);
+				adc[i][j] = new TH1D(Form("ADC%d%d", i, j), "ADC; ADC; Counts;", 4096, 0, 4096);
+				tdc[i][j] = new TH1D(Form("TDC%d%d", i, j), "TDC; Time (ps); Counts;", 1000, 0, 10000E3); 
+				rate[i][j] = new TGraph();
 			}
 		}
 	}
@@ -563,6 +566,11 @@ void FADC500Decoder::Monitor(Int_t &monitorflag)
 		tdc[mid-1][cid-1] -> Fill(waveform_ftime);
 		gSystem -> ProcessEvents();
 
+		if (local_trig_num == 0)	tdiff[mid-1][cid-1] = 0;
+		if (local_trig_num != 0)	tdiff[mid-1][cid-1] = local_trig_num - tdiff[mid-1][cid-1];
+		rate[mid-1][cid-1] -> SetPoint(local_trig_num, local_trig_num, tdiff[mid-1][cid-1]);
+		if (local_trig_num > 500)   rate[mid-1][cid-1] -> GetXaxis() -> SetLimits(local_trig_num-500, local_trig_num+100);
+
 		c1[mid-1][cid-1] -> cd();
 		c1[mid-1][cid-1] -> Modified();
 		c1[mid-1][cid-1] -> Update();
@@ -580,6 +588,16 @@ void FADC500Decoder::Monitor(Int_t &monitorflag)
 		c3[mid-1][cid-1] -> Update();
 		tdc[mid-1][cid-1] -> Draw();
 		gSystem -> ProcessEvents();
+
+		c4[mid-1][cid-1] -> cd();
+		c4[mid-1][cid-1] -> Modified();
+		c4[mid-1][cid-1] -> Update();
+		rate[mid-1][cid-1] -> Draw();
+		gSystem -> ProcessEvents();
+
+
+		
+		tdiff[mid-1][cid-1] = local_trig_num;
 	}
 	
 }

@@ -15,6 +15,7 @@
 #include "TTree.h"
 #include "TString.h"
 #include "TCanvas.h"
+#include "TGraph.h"
 
 
 // Header file for the classes stored in the TTree if any.
@@ -50,6 +51,7 @@ class FADC500Decoder {
 		Double_t        waveform_ftime;
 
 		Int_t			adcvalue;
+		Double_t		tdiff[6][4];
 
 		// List of branches
 		TBranch			*b_event_number;   //!
@@ -85,9 +87,11 @@ class FADC500Decoder {
 		TH1D			*fadc[6][4];
 		TH1D			*adc[6][4];
 		TH1D			*tdc[6][4];
+		TGraph			*rate[6][4];
 		TCanvas			*c1[6][4];
 		TCanvas			*c2[6][4];
 		TCanvas			*c3[6][4];
+		TCanvas			*c4[6][4];
 
 		void     		GetTree(const char* filename, TTree *tree=0);
 		Int_t    		GetEntry(Long64_t entry);
