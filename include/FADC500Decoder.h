@@ -92,6 +92,7 @@ class FADC500Decoder {
 		TCanvas			*c2[6][4];
 		TCanvas			*c3[6][4];
 		TCanvas			*c4[6][4];
+		UInt_t			eventflag[6][4];
 
 		void     		GetTree(const char* filename, TTree *tree=0);
 		Int_t    		GetEntry(Long64_t entry);
