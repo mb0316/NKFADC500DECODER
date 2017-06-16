@@ -573,8 +573,12 @@ void FADC500Decoder::Monitor(Int_t &monitorflag)
 
 		if (eventflag[mid-1][cid-1] == 0)	tdiff[mid-1][cid-1] = 0;
 		if (eventflag[mid-1][cid-1] != 0)	tdiff[mid-1][cid-1] = local_trig_ctime - tdiff[mid-1][cid-1];
-		rate[mid-1][cid-1] -> SetPoint(eventflag[mid-1][cid-1], local_trig_num, tdiff[mid-1][cid-1]);
-		if (local_trig_num > 500)   rate[mid-1][cid-1] -> GetXaxis() -> SetLimits(local_trig_num-500, local_trig_num+100);
+		rate[mid-1][cid-1] -> SetPoint(eventflag[mid-1][cid-1], eventflag[mid-1][cid-1], tdiff[mid-1][cid-1]);
+		if (local_trig_num > 500)
+		{
+			rate[mid-1][cid-1] -> GetXaxis() -> SetLimits(local_trig_num-500, local_trig_num+100);
+			rate[mid-1][cid-1] -> RemovePoint(eventflag[mid-1][cid-1]-500);
+		}
 
 		c1[mid-1][cid-1] -> cd();
 		c1[mid-1][cid-1] -> Modified();
