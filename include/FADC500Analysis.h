@@ -98,7 +98,7 @@ class FADC500Analysis {
 		TCanvas			*cCFD;
 
 		Int_t			delay[6][4];
-		Int_t			ratio[6][4];
+		Double_t		ratio[6][4];
 		Int_t			length[6][4];
 		Int_t			flength[6][4];
 		Int_t			gap[6][4];

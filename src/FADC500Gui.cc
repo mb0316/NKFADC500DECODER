@@ -870,7 +870,7 @@ void FADC500Gui::SetRatio(char *value)
     Int_t widgetID = object -> WidgetId();
     Int_t module = widgetID/100;
     Int_t channel = (widgetID%100)/10;
-    ana.ratio[module][channel] = atoi(value);
+    ana.ratio[module][channel] = atof(value);
     cout << "***** Module ID : " << module+1 << " *****" << endl;
     cout << "***** Channel ID : " << channel+1 << " *****" << endl;
     cout << "***** CFD Ratio : " << ana.ratio[module][channel] << endl;
@@ -934,7 +934,7 @@ void FADC500Gui::SetSame()
 				fDFTHR[i][j] -> SetText(Form("%d", ana.thr[i][j]), kFALSE);
 				fPRETHR[i][j] -> SetText(Form("%d", ana.pre_thr[i][j]), kFALSE);
 				fDELAY[i][j] -> SetText(Form("%d", ana.delay[i][j]), kFALSE);
-				fRATIO[i][j] -> SetText(Form("%d", ana.ratio[i][j]), kFALSE);
+				fRATIO[i][j] -> SetText(Form("%f", ana.ratio[i][j]), kFALSE);
 				fLENGTH[i][j] -> SetText(Form("%d", ana.length[i][j]), kFALSE);
 				fFLENGTH[i][j] -> SetText(Form("%d", ana.flength[i][j]), kFALSE);
 				fGAP[i][j] -> SetText(Form("%d", ana.gap[i][j]), kFALSE);
@@ -967,7 +967,7 @@ void FADC500Gui::SetSame()
 				fDFTHR[i][j] -> SetText(Form("%d", ana.thr[i][j]), kFALSE);
 				fPRETHR[i][j] -> SetText(Form("%d", ana.pre_thr[i][j]), kFALSE);
 				fDELAY[i][j] -> SetText(Form("%d", ana.delay[i][j]), kFALSE);
-				fRATIO[i][j] -> SetText(Form("%d", ana.ratio[i][j]), kFALSE);
+				fRATIO[i][j] -> SetText(Form("%f", ana.ratio[i][j]), kFALSE);
 				fLENGTH[i][j] -> SetText(Form("%d", ana.length[i][j]), kFALSE);
 				fFLENGTH[i][j] -> SetText(Form("%d", ana.flength[i][j]), kFALSE);
 				fGAP[i][j] -> SetText(Form("%d", ana.gap[i][j]), kFALSE);
