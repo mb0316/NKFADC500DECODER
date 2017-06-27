@@ -523,6 +523,8 @@ void FADC500Decoder::Monitor(Int_t &monitorflag)
 				rate[i][j] = new TGraph();
 				rate[i][j] -> SetMarkerStyle(21);
 				rate[i][j] -> SetMarkerColor(2);
+				rate[i][j] -> GetXaxis() -> SetTitle("Event Number");
+				rate[i][j] -> GetYaxis() -> SetTitle("Trigger Rate (Hz)");
 				eventflag[i][j] = 0;
 			}
 		}
