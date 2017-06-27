@@ -521,6 +521,8 @@ void FADC500Decoder::Monitor(Int_t &monitorflag)
 				adc[i][j] = new TH1D(Form("ADC%d%d", i, j), "ADC; ADC; Counts;", 4096, 0, 4096);
 				tdc[i][j] = new TH1D(Form("TDC%d%d", i, j), "TDC; Time (ps); Counts;", 1000, 0, 10000E3); 
 				rate[i][j] = new TGraph();
+				rate[i][j] -> SetMarkerStyle(21);
+				rate[i][j] -> SetMarkerColor(2);
 				eventflag[i][j] = 0;
 			}
 		}
@@ -571,13 +573,20 @@ void FADC500Decoder::Monitor(Int_t &monitorflag)
 		tdc[mid-1][cid-1] -> Fill(waveform_ftime);
 		gSystem -> ProcessEvents();
 
-		if (eventflag[mid-1][cid-1] == 0)	tdiff[mid-1][cid-1] = 0;
-		if (eventflag[mid-1][cid-1] != 0)	tdiff[mid-1][cid-1] = local_trig_ctime - tdiff[mid-1][cid-1];
-		rate[mid-1][cid-1] -> SetPoint(eventflag[mid-1][cid-1], eventflag[mid-1][cid-1], tdiff[mid-1][cid-1]);
-		if (local_trig_num > 500)
+		if (eventflag[mid-1][cid-1] == 0)
 		{
-			rate[mid-1][cid-1] -> GetXaxis() -> SetLimits(local_trig_num-500, local_trig_num+100);
-			rate[mid-1][cid-1] -> RemovePoint(eventflag[mid-1][cid-1]-500);
+			tdiff[mid-1][cid-1] = 0;
+			rate[mid-1][cid-1] -> SetPoint(0, 0, 0);
+		}
+		if (eventflag[mid-1][cid-1] != 0)
+		{
+			tdiff[mid-1][cid-1] = local_trig_ctime - tdiff[mid-1][cid-1];
+			rate[mid-1][cid-1] -> SetPoint(eventflag[mid-1][cid-1], eventflag[mid-1][cid-1], 1/(1E-6 * tdiff[mid-1][cid-1]));
+		}
+		if (eventflag[mid-1][cid-1] > 150)
+		{
+			rate[mid-1][cid-1] -> GetXaxis() -> SetLimits(eventflag[mid-1][cid-1]-150, eventflag[mid-1][cid-1]+10);
+			rate[mid-1][cid-1] -> RemovePoint(eventflag[mid-1][cid-1]-150);
 		}
 
 		c1[mid-1][cid-1] -> cd();
@@ -601,7 +610,7 @@ void FADC500Decoder::Monitor(Int_t &monitorflag)
 		c4[mid-1][cid-1] -> cd();
 		c4[mid-1][cid-1] -> Modified();
 		c4[mid-1][cid-1] -> Update();
-		rate[mid-1][cid-1] -> Draw();
+		rate[mid-1][cid-1] -> Draw("ap");
 		gSystem -> ProcessEvents();
 
 
